@@ -92,12 +92,16 @@ form{
   padding: 5px;
 }
 
+body{
+  overflow: hidden;
+}
+
+.navbar-brand{
+  pointer-events: none;
+}
+
 footer{
   position: fixed;
   bottom: 0;
-  width: 100%;
-}
-
-body{
-  overflow: hidden;
+  width: 110%;
 }

@@ -14,10 +14,17 @@
 </head>
   <body>
   <header>
-    <nav class="navbar navbar-dark bg-dark">
-      <span class="navbar-brand mb-0 h1"><i class="fa-solid fa-note-sticky"></i><a href="script/makeList.php" class="navbar">Lijst maken</a></span>
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#"><i id="icon" class="fa-solid fa-note-sticky"></i></a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active"> -->
+            <a class="nav-link" href="script/makeList.php"><h3>Lijst maken</h3></a>
+          <!-- </li>
+        </ul>
+      </div>
     </nav>
-  </header>
+  </header> -->
 
   <?php
     foreach($lists as $list){
@@ -26,7 +33,10 @@
     <div class="column">
       <table>
         </tr>
-          <th><?=$list["title2"]?></th>
+          <th><?=$list["title2"]?>
+            <a href="script/editList.php"><i class="fa-solid fa-pencil" style="color:#38df6a"></i></a>
+            <a href="script/deleteList.php"><i class="fa-solid fa-trash-can" style="color:#38df6a"></i></a>
+          </th>
         </tr>
 
         <?php
