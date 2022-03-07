@@ -11,8 +11,17 @@
   }
   
 ?>
+<head>
+  <title>form</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
 <form action="detail.php?id=<?= $note["id"]?>" method="post">
   <label for="Confirm">Wil je de notitie <b><?= $note["title"]?></b> verwijderen?</label>
-  <button class="btn btn-success btn-sm" type="submit" name="Delete" value="true">Ja</button>
-  <input type="button" value="Nee" id="btnClose" onClick="Javascript:window.location.href = '../index.php';" />
+  <button class="class="buttons"" type="submit" name="Delete" value="true">Ja</button>
+  <a href="../index.php" class="buttons">Nee</a>
 </form>
+
+<?php   
+  include("common/footer.php"); 
+?>

@@ -3,6 +3,11 @@
     
     $note = getTable("todolist", $_GET["id"]);
 ?>
+<head>
+  <title>editNote</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
 <h2>Wijzig de Notitie:</h2>
 <br>
 <form method="post" action="../index.php">  
@@ -24,3 +29,7 @@
     <br>
     <button class="btn btn-primary" name="SubmitBtn2" value="confirm">Confirm</button>
 </form>
+
+<?php   
+  include("common/footer.php"); 
+?>

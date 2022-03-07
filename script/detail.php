@@ -10,6 +10,10 @@
     header("location: ../index.php");
   }
 ?>
+<head>
+  <title>Detail</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
 <div class="row">
   <div class="col-6">
@@ -30,3 +34,7 @@
     </form>
   </div> 
 </div>
+
+<?php   
+  include("common/footer.php"); 
+?>

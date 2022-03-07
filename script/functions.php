@@ -14,14 +14,15 @@
   //Toevoegen aan database
   function addNote($data){
     $conn = openDatabase();
-    
+
     if(!empty($data) && isset($data)){
-      if(isset($data["title"]) && !empty($data["title"]) && isset($data["task"]) && !empty($data["task"]) && isset($data["description"]) && !empty($data["description"]) && isset($data["duration"]) && !empty($data["duration"])){
-        $query = $conn->prepare("INSERT INTO todolist(title, task, description, duration) VALUES (:title, :task, :description, :duration)");
+      if(isset($data["title"]) && !empty($data["title"]) && isset($data["task"]) && !empty($data["task"]) && isset($data["description"]) && !empty($data["description"]) && isset($data["duration"]) && !empty($data["duration"]) && isset($data["listId"]) && !empty($data["listId"])){
+        $query = $conn->prepare("INSERT INTO todolist(title, task, description, duration, listId) VALUES (:title, :task, :description, :duration, :listId)");
         $query->bindParam(":title", $data["title"]);
         $query->bindParam(":task", $data["task"]);
         $query->bindParam(":description", $data["description"]);
         $query->bindParam(":duration", $data["duration"]);
+        $query->bindParam(":listId", $data["listId"]);
         $query->execute();
 
         return $data;
@@ -57,7 +58,6 @@
     $check = getTable("todolist", $data["id"]);
 
     if(!empty($data["id"]) && isset($data["id"]) && is_numeric($data["id"]) && !empty($check) && isset($check)){
-      echo("test2 ");
       $query = $conn->prepare("UPDATE todolist SET task=:task, status=:status, description=:description, duration=:duration WHERE id=:id");
       $query->bindParam(":task",  $data["task"]);
       $query->bindParam(":status",  $data["status"]);
@@ -126,6 +126,18 @@
       }else{
         $data["id"] = $id;
       }
+
+      if(!empty($_POST["listId"])){
+        $listId = trimdata($_POST["listId"]);
+        settype($listId, "int");
+        $note = getTable("todolist", $listId);
+  
+        if(!is_numeric($listId) && isset($note) && !empty($note)){
+          echo("Er bestaat geen notitie met dit listId!");
+        }else{
+          $data["listId"] = $listId;
+        }
+      }
   }
 
     return $data;
@@ -142,12 +154,13 @@
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty($_POST["SubmitBtn"])) {
       $input = controle();
-    }if (!empty($input) && isset($input)){
-      addNote($input);
+    }if (!empty($_POST) && isset($_POST)){
+      addNote($_POST);
     }elseif(!empty($_POST["Delete"])){
       deleteNote($_GET["id"]);
     }elseif(!empty($_POST["SubmitBtnList"])){
       $input = controle();
+      addList($input);
     }elseif(!empty($_POST["SubmitBtn2"])){
       $input = controle();
       editNote($input);
@@ -167,7 +180,7 @@
     } 
   }
 
-  //Alle lijsten ophalen
+  // Alle lijsten ophalen
   function getAllList(){
     $conn = openDatabase();
 
@@ -177,14 +190,12 @@
     return $query->fetchAll();
   }
 
-  //Lijst toevoegen
+  // Lijst toevoegen
   function addList($data){
     $conn = openDatabase();
-
-    var_dump($data);
     
     if(!empty($data) && isset($data)){
-      if(isset($data["title2"]) && !empty($data["title2"])){
+      if(isset($data["title2"]) && !empty($data["title2"])){  
         $query = $conn->prepare("INSERT INTO list (title2) VALUES (:title2)");
         $query->bindParam(":title2", $data["title2"]);
         $query->execute();
@@ -195,5 +206,4 @@
       echo("error empty post note bij function controle.");
     }
   }
-
 ?>
