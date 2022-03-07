@@ -1,3 +1,33 @@
 table, th, td {
   border:1px solid black;
+  margin: 4px;  
+  width: 150px;
+  float: left;
+}
+
+th{
+  border: none;
+  text-align: center;
+}
+
+table {
+  border-collapse: initial !important;
+}
+
+.container{
+  display: inline-block;
+}
+
+.buttons{
+  background-color: #38df6a;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.link{
+  text-decoration: none;
+  color: black;
 }
