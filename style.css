@@ -1,8 +1,10 @@
 table, th, td {
-  border:1px solid black;
   margin: 4px;  
   width: 150px;
+  color: #324574;
   float: left;
+  background-color: white;
+  border-bottom: 1px solid #324574;
 }
 
 th{
@@ -11,23 +13,91 @@ th{
 }
 
 table {
+  border:1px solid black;
   border-collapse: initial !important;
+  margin-left: 15px;
 }
 
-.container{
-  display: inline-block;
+#indexBtn{
+  border: none !important;
 }
 
-.buttons{
+.buttons, .buttonsList{
   background-color: #38df6a;
   color: white;
-  padding: 14px 25px;
+  padding: 10px 15px;
+  margin-top: 5px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  border: none;
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  border-radius: 5px;
 }
 
-.link{
+.buttonsList{
+  margin-bottom: 0 !important;
+}
+
+.link, p, h4, select, b{
   text-decoration: none;
-  color: black;
+  color: #324574;
+}
+
+.min-vh-100 {
+  background-color: #E7EFFF;
+}
+
+.navbar{
+  color: white;
+}
+
+.bg{
+  background-color: white;
+}
+
+.container, .col-6, .edit{
+  margin: 15px 0px 15px 15px !important;
+}
+
+input{
+  color: #324574;
+}
+
+.col-6{
+  width: 250px;
+}
+
+a{
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: #6D7698 !important;
+}
+
+form{ 
+  display: inline-block; 
+}
+
+.row {
+  display: flex;
+  margin-left:-5px;
+  margin-right:-5px;
+}
+
+.column {
+  flex: 50%;
+  padding: 5px;
+}
+
+footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+body{
+  overflow: hidden;
 }
