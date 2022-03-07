@@ -14,29 +14,32 @@
     <br>
     <br>
 
+    <?php
+      foreach($lists as $list){
+    ?>
     <table>
-      <?php
-        foreach($lists as $list){
-      ?>
-        <tr>
-          <th><?=$list["title"]?></th>
-        </tr>
-      <?php
-        }
-      ?>
-
+      </tr>
+        <th><?=$list["title2"]?></th>
+      </tr>
 
       <?php
         foreach($notes as $note){
+          if($note["listId"] == $list["id"]){
       ?>
       <tr>
         <td><a href="script/detail.php?id=<?=$note["id"]?>"><?=$note["title"]?></a></td>
         <td><?=$note["task"]?></td>
       <?php
+          }
         }
       ?>
+
+      </tr>
       <br>
-      <Td><input type="button" value="Notitie maken" id="btnClose" onClick="Javascript:window.location.href = 'script/makeNote.php';" /></Td>
+      <td><input type="button" value="Notitie maken" id="btnClose" onClick="Javascript:window.location.href = 'script/makeNote.php';" /></td>
     </table>
-</body>
+    <?php
+      }
+    ?>
+  </body>
 </html>
