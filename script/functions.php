@@ -16,10 +16,8 @@
     $conn = openDatabase();
 
     var_dump($data);
-    echo("<br>");
     
     if(!empty($data) && isset($data)){
-      echo($data["title"]);
       if(isset($data["title"]) && !empty($data["title"]) && isset($data["task"]) && !empty($data["task"]) && isset($data["description"]) && !empty($data["description"]) && isset($data["duration"]) && !empty($data["duration"])){
         $query = $conn->prepare("INSERT INTO todolist(title, task, description, duration) VALUES (:title, :task, :description, :duration)");
         $query->bindParam(":title", $data["title"]);
@@ -56,18 +54,6 @@
 
   function controle(){
     $data = [];
-    
-    // if(!empty($_POST["id"])){
-    //   $id = trimdata($_POST["id"]);
-    //   settype($id, "int");
-    //   $todolist = getTable("todolist", $id);
-
-    //   if(!is_numeric($id) && isset($todolist) && !empty($todolist)){
-    //     echo("Er bestaat geen notitie met dit id!");
-    //   }else{
-    //     $data["id"] = $id;
-    //   }
-    // }
 
     if(!empty($_POST["duration"])){
       $duration = trimdata($_POST["duration"]);
@@ -105,6 +91,15 @@
       }
     }
 
+    if(!empty($_POST["title2"])){
+      $title2 = trimdata($_POST["title2"]);
+      if(!preg_match("/^[a-zA-Z-' ]*$/", $title2)){
+        echo("Alleen letters en spaties zijn toegestaan!");
+      }else{
+        $data["title2"] = $title2;
+      }
+    }
+
     return $data;
   }
 
@@ -119,9 +114,56 @@
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty($_POST["SubmitBtn"])) {
       $input = controle();
-      if (!empty($input) && isset($input)) {
-        addNote($input);
-      }
+    }if (!empty($input) && isset($input)) {
+      addNote($input);
+    }elseif(!empty($_POST["Delete"])) {
+      deleteNote($_GET["id"]);
+      //header("location: ../index.php");
+    }elseif(!empty($_POST["SubmitBtnList"])) {
+      $input = controle();
     }
   }
+
+  // Verwijderd 1 notitie
+  function deleteNote($id){
+    $conn = openDatabase();
+    $id = intval($id);
+    $check = getTable("todolist", $id);
+
+    if(!empty($id) && isset($id) && is_numeric($id) && !empty($check) && isset($check)){
+      $query = $conn->prepare("DELETE FROM todolist WHERE id = :id");
+      $query->bindParam(":id", $id);
+      $query->execute(); 
+    } 
+  }
+
+  //Alle lijsten ophalen
+  function getAllList(){
+    $conn = openDatabase();
+
+    $query = $conn->prepare("SELECT * FROM list");
+    $query->execute();
+
+    return $query->fetchAll();
+  }
+
+  //Lijst toevoegen
+  function addList($data){
+    $conn = openDatabase();
+
+    var_dump($data);
+    
+    if(!empty($data) && isset($data)){
+      if(isset($data["title2"]) && !empty($data["title2"])){
+        $query = $conn->prepare("INSERT INTO list (title2) VALUES (:title2)");
+        $query->bindParam(":title2", $data["title2"]);
+        $query->execute();
+
+        return $data;
+      }
+    }else{
+      echo("error empty post note bij function controle.");
+    }
+  }
+
 ?>

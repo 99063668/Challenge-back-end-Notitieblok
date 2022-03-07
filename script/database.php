@@ -10,8 +10,6 @@ function openDatabase(){
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $connect;
   } catch (PDOException $error) {
-    echo "Database connection failed: ".$error->getMessage();
-    echo "<br>";
   }
 }
 ?>

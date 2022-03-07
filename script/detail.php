@@ -4,10 +4,10 @@
   if(isset($_GET["id"])){
     $note = getTable("todolist", $_GET["id"]);
     if(!$note){
-      header("location: index.php");
+      header("location: ../index.php");
     }
   }else{
-    header("location: index.php");
+    header("location: ../index.php");
   }
 ?>
 
@@ -20,5 +20,9 @@
     <p><b><label class="w-25 font-weight-bold">Status: </b></tabel><?=$note["status"]?></p>
     
     <input type="button" value="Sluiten" id="btnClose" onClick="Javascript:window.location.href = '../index.php';" />
+    
+    <form action="form.php?id=<?= $note["id"]?>" method="post">
+      <button class="btn btn-primary btn-sm" type="submit" name="Delete2" value="Delete2">Verwijder</button>
+    </form>
   </div> 
 </div>
