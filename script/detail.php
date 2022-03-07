@@ -21,6 +21,10 @@
     
     <input type="button" value="Sluiten" id="btnClose" onClick="Javascript:window.location.href = '../index.php';" />
     
+    <form action="editNote.php?id=<?= $note["id"]?>"  method="post">
+      <input class="btn btn-primary btn-sm" type="submit" name="Edit" value="Edit">
+    </form>
+
     <form action="form.php?id=<?= $note["id"]?>" method="post">
       <button class="btn btn-primary btn-sm" type="submit" name="Delete2" value="Delete2">Verwijder</button>
     </form>

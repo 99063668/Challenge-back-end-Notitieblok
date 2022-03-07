@@ -14,8 +14,6 @@
   //Toevoegen aan database
   function addNote($data){
     $conn = openDatabase();
-
-    var_dump($data);
     
     if(!empty($data) && isset($data)){
       if(isset($data["title"]) && !empty($data["title"]) && isset($data["task"]) && !empty($data["task"]) && isset($data["description"]) && !empty($data["description"]) && isset($data["duration"]) && !empty($data["duration"])){
@@ -38,7 +36,7 @@
     $conn = openDatabase();
     $id = intval($id);
     try {
-      if (($table == "todolist") && isset($id) && !empty($id) && is_numeric($id)) {
+      if (($table == "todolist" || $table == "list") && isset($id) && !empty($id) && is_numeric($id)) {
         $query = $conn->prepare("SELECT * FROM `$table` WHERE id = :id");
         $query->bindParam(":id", $id);
         $query->execute();
@@ -52,13 +50,31 @@
   
 }
 
+  //Edit een notitie
+  function editNote($data){
+    $conn = openDatabase();
+    $data["id"] = intval($data["id"]);
+    $check = getTable("todolist", $data["id"]);
+
+    if(!empty($data["id"]) && isset($data["id"]) && is_numeric($data["id"]) && !empty($check) && isset($check)){
+      echo("test2 ");
+      $query = $conn->prepare("UPDATE todolist SET task=:task, status=:status, description=:description, duration=:duration WHERE id=:id");
+      $query->bindParam(":task",  $data["task"]);
+      $query->bindParam(":status",  $data["status"]);
+      $query->bindParam(":duration",  $data["duration"]);
+      $query->bindParam(":description",  $data["description"]);
+      $query->bindParam(":id", $data["id"]);
+      $query->execute(); 
+    }  
+}
+
   function controle(){
     $data = [];
 
     if(!empty($_POST["duration"])){
       $duration = trimdata($_POST["duration"]);
       if(!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $duration)){
-        echo("Alleen letters en spaties zijn toegestaan!");
+        echo("Alleen tijd is toegestaan!");
       }else{
         $data["duration"] = $duration;
       }
@@ -100,6 +116,18 @@
       }
     }
 
+    if(!empty($_POST["id"])){
+      $id = trimdata($_POST["id"]);
+      settype($id, "int");
+      $note = getTable("todolist", $id);
+
+      if(!is_numeric($id) && isset($note) && !empty($note)){
+        echo("Er bestaat geen notitie met dit id!");
+      }else{
+        $data["id"] = $id;
+      }
+  }
+
     return $data;
   }
 
@@ -114,13 +142,15 @@
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty($_POST["SubmitBtn"])) {
       $input = controle();
-    }if (!empty($input) && isset($input)) {
+    }if (!empty($input) && isset($input)){
       addNote($input);
-    }elseif(!empty($_POST["Delete"])) {
+    }elseif(!empty($_POST["Delete"])){
       deleteNote($_GET["id"]);
-      //header("location: ../index.php");
-    }elseif(!empty($_POST["SubmitBtnList"])) {
+    }elseif(!empty($_POST["SubmitBtnList"])){
       $input = controle();
+    }elseif(!empty($_POST["SubmitBtn2"])){
+      $input = controle();
+      editNote($input);
     }
   }
 
