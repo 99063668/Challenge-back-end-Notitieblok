@@ -48,8 +48,7 @@
     } catch(PDOException $e) {
         echo "Connection failed: ". $e->getMessage();
     }
-  
-}
+  }
 
   //Edit een notitie
   function editNote($data){
@@ -66,7 +65,20 @@
       $query->bindParam(":id", $data["id"]);
       $query->execute(); 
     }  
-}
+  }
+
+  // Verwijderd 1 notitie
+  function deleteNote($id){
+    $conn = openDatabase();
+    $id = intval($id);
+    $check = getTable("todolist", $id);
+
+    if(!empty($id) && isset($id) && is_numeric($id) && !empty($check) && isset($check)){
+      $query = $conn->prepare("DELETE FROM todolist WHERE id = :id");
+      $query->bindParam(":id", $id);
+      $query->execute(); 
+    } 
+  }
 
   function controle(){
     $data = [];
@@ -119,6 +131,18 @@
     if(!empty($_POST["id"])){
       $id = trimdata($_POST["id"]);
       settype($id, "int");
+      $note = getTable("list", $id);
+
+      if(!is_numeric($id) && isset($note) && !empty($note)){
+        echo("Er bestaat geen lijst met dit id!");
+      }else{
+        $data["id"] = $id;
+      }
+    }
+
+    if(!empty($_POST["id"])){
+      $id = trimdata($_POST["id"]);
+      settype($id, "int");
       $note = getTable("todolist", $id);
 
       if(!is_numeric($id) && isset($note) && !empty($note)){
@@ -154,30 +178,24 @@
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty($_POST["SubmitBtn"])) {
       $input = controle();
-    }if (!empty($_POST) && isset($_POST)){
+    }if(!empty($_POST) && isset($_POST)){
       addNote($_POST);
     }elseif(!empty($_POST["Delete"])){
       deleteNote($_GET["id"]);
     }elseif(!empty($_POST["SubmitBtnList"])){
+      echo("test add");
       $input = controle();
       addList($input);
     }elseif(!empty($_POST["SubmitBtn2"])){
       $input = controle();
       editNote($input);
+    }elseif(!empty($_POST["editList"])){
+      echo("test edit");
+      $input = controle();
+      editList($input);
+    }elseif(!empty($_POST["DeleteList"])){
+      deleteList($_GET["id"]);
     }
-  }
-
-  // Verwijderd 1 notitie
-  function deleteNote($id){
-    $conn = openDatabase();
-    $id = intval($id);
-    $check = getTable("todolist", $id);
-
-    if(!empty($id) && isset($id) && is_numeric($id) && !empty($check) && isset($check)){
-      $query = $conn->prepare("DELETE FROM todolist WHERE id = :id");
-      $query->bindParam(":id", $id);
-      $query->execute(); 
-    } 
   }
 
   // Alle lijsten ophalen
@@ -192,6 +210,7 @@
 
   // Lijst toevoegen
   function addList($data){
+    echo("functie uitgevoerd");
     $conn = openDatabase();
     
     if(!empty($data) && isset($data)){
@@ -205,5 +224,34 @@
     }else{
       echo("error empty post note bij function controle.");
     }
+  }
+
+   // Edit een lijst
+   function editList($data){
+    echo("testen edit");
+    $conn = openDatabase();
+    $data["id"] = intval($data["id"]);
+    $check = getTable("list", $data["id"]);
+
+    if(!empty($data["id"]) && isset($data["id"]) && is_numeric($data["id"]) && !empty($check) && isset($check)){
+      $query = $conn->prepare("UPDATE list SET title2=:title2 WHERE id=:id");
+      $query->bindParam(":title2",  $data["title2"]);
+      $query->bindParam(":id", $data["id"]);
+      $query->execute(); 
+    } 
+  }
+
+  // Verwijderd 1 lijst
+  function deleteList($id){
+    echo("testen delete");
+    $conn = openDatabase();
+    $id = intval($id);
+    $check = getTable("list", $id);
+
+    if(!empty($id) && isset($id) && is_numeric($id) && !empty($check) && isset($check)){
+      $query = $conn->prepare("DELETE FROM list WHERE id = :id");
+      $query->bindParam(":id", $id);
+      $query->execute(); 
+    } 
   }
 ?>
