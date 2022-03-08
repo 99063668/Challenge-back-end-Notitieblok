@@ -1,6 +1,6 @@
 table, th, td {
   margin: 4px;  
-  width: 150px;
+  width: 184px;
   color: #324574;
   float: left;
   background-color: white;
@@ -103,5 +103,5 @@ body{
 footer{
   position: fixed;
   bottom: 0;
-  width: 110%;
+  width: 100%;
 }

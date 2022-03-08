@@ -34,15 +34,11 @@
       <table>
         </tr>
           <th><?=$list["title2"]?>
-            <a href="script/editList.php?id=<?=$list["id"]?>"><i class="fa-solid fa-pencil" style="color:#38df6a"></i></a>
-            <a href="script/makeNote.php?listId=<?=$list["id"]?>"><i class="fa-solid fa-plus" style="color:#38df6a"></i></a>
-            <a href="script/deleteList.php?id=<?=$list["id"]?>"><i class="fa-solid fa-trash-can" style="color:#38df6a"></i></a>
-            
-            <select id="filter" name="filter">
-              <option selected value="Duur">Duur</option>
-              <option value="Status">Status</option>
-            </select>
-
+            <div class="headerIcon" style="float: right;">
+              <a href="script/editList.php?id=<?=$list["id"]?>"><i class="fa-solid fa-pencil" style="color:#38df6a"></i></a>
+              <a href="script/makeNote.php?listId=<?=$list["id"]?>"><i class="fa-solid fa-plus" style="color:#38df6a"></i></a>
+              <a href="script/deleteList.php?id=<?=$list["id"]?>"><i class="fa-solid fa-trash-can" style="color:#FF8200"></i></a>
+            </div>
           </th>
         </tr>
 
@@ -56,18 +52,29 @@
             }
           }
         ?>
-
         </tr>
         <br>
+
+        <th> 
+          <form method="post" action="index.php"> 
+            <select id="filter" name="filter">
+              <option selected><--Filter lijst--></option>
+              <option value="sorteerDuur">Duur</option>
+              <option value="filterBezig">Status: bezig</option>
+              <option value="filterAfgerond">Status: afgerond</option>
+              <option value="filterNbegonnen">Status: niet begonnen</option>
+            </select>
+          </form>
+        </th>
       <?php
         }
       ?>
     </div>
   </div>
-</html>
 
-<footer>
-  <?php   
-    include("common/footer.php"); 
-  ?>
-</footer>
+  <footer>
+    <?php   
+      include("common/footer.php"); 
+    ?>
+  </footer>
+</html>
