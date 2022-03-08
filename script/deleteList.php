@@ -21,10 +21,10 @@
 
   <div class="container">
     <form action="detail.php?id=<?= $list["id"]?>" method="post">
-      <label for="Confirm">Wil je de lijst <b><?= $list["title2"]?></b> met alle bijhorende notities verwijderen?</label>
+      <label for="Confirm">Wil je de lijst <b><?= $list["title2"]?></b> met alle bijhorende notities <b style="color:#FF8200">permanent</b> verwijderen?</label>
       <br>
       <button class="buttons" type="submit" name="DeleteList" value="true">Ja</button>
-      <a href="../index.php" class="buttons">Nee</a>
+      <a href="../index.php" class="buttons" style="background-color:#FF8200">Nee</a>
     </form>
   </div>
 

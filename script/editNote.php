@@ -22,12 +22,15 @@
             
             <p><b>Titel: </b><input type="text" name="task" required value="<?php echo $note["title"]?>"></p>
             <p><b>Taak: </b><input type="text" name="task" required value="<?php echo $note["task"]?>"></p>
-            <p><b>Duur: </b><input type="time" name="duration" required value="<?php echo $note["duration"]?>"></p>
+            <p><b>Geschatte tijd: </b><input type="time" name="duration" required value="<?php echo $note["duration"]?>"></p>
+            <!-- <p><b>Geschatte tijd: </b><input type="text" name="duration" required value="<?php echo $note["duration"]?>"></p> -->
 
             <label for="status"><b>Status:</b></label>
             <select id="status" name="status">
-              <option selected value="Bezig">Bezig</option>
+              <option selected><--Status notitie--></option>  
+              <option value="Bezig">Bezig</option>
               <option value="Afgerond">Afgerond</option>
+              <option value="Niet begonnen">Niet begonnen</option>
             </select>
             
             <p><b>Omschrijving: </b></p><textarea name="description" placeholder="Voeg hier uw omschrijving toe" required value="<?php echo $note["description"]?>"rows="5" cols="40"></textarea>
