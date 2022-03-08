@@ -16,10 +16,11 @@
     $conn = openDatabase();
 
     if(!empty($data) && isset($data)){
-      if(isset($data["title"]) && !empty($data["title"]) && isset($data["task"]) && !empty($data["task"]) && isset($data["description"]) && !empty($data["description"]) && isset($data["duration"]) && !empty($data["duration"]) && isset($data["listId"]) && !empty($data["listId"])){
-        $query = $conn->prepare("INSERT INTO todolist(title, task, description, duration, listId) VALUES (:title, :task, :description, :duration, :listId)");
+      if(isset($data["title"]) && !empty($data["title"]) && isset($data["task"]) && isset($data["listId"]) && !empty($data["listId"]) && !empty($data["task"]) && isset($data["description"]) && !empty($data["description"]) && isset($data["duration"]) && !empty($data["duration"]) && isset($data["listId"]) && !empty($data["listId"])){
+        $query = $conn->prepare("INSERT INTO todolist(title, task, status, description, duration, listId) VALUES (:title, :task, :status, :description, :duration, :listId)");
         $query->bindParam(":title", $data["title"]);
         $query->bindParam(":task", $data["task"]);
+        $query->bindParam(":status", $data["status"]);
         $query->bindParam(":description", $data["description"]);
         $query->bindParam(":duration", $data["duration"]);
         $query->bindParam(":listId", $data["listId"]);
@@ -119,6 +120,15 @@
       }
     }
 
+    if(!empty($_POST["status"])){
+      $status = trimdata($_POST["status"]);
+      if(!preg_match("/^[a-zA-Z-' , ]*$/", $status)){
+        echo("Alleen letters en spaties zijn toegestaan!");
+      }else{
+        $data["status"] = $status;
+      }
+    }
+
     if(!empty($_POST["title2"])){
       $title2 = trimdata($_POST["title2"]);
       if(!preg_match("/^[a-zA-Z-' ]*$/", $title2)){
@@ -131,24 +141,24 @@
     if(!empty($_POST["id"])){
       $id = trimdata($_POST["id"]);
       settype($id, "int");
-      $note = getTable("list", $id);
-
-      if(!is_numeric($id) && isset($note) && !empty($note)){
-        echo("Er bestaat geen lijst met dit id!");
-      }else{
-        $data["id"] = $id;
-      }
-    }
-
-    if(!empty($_POST["id"])){
-      $id = trimdata($_POST["id"]);
-      settype($id, "int");
       $note = getTable("todolist", $id);
 
       if(!is_numeric($id) && isset($note) && !empty($note)){
         echo("Er bestaat geen notitie met dit id!");
       }else{
         $data["id"] = $id;
+      }
+
+      if(!empty($_POST["id"])){
+        $id = trimdata($_POST["id"]);
+        settype($id, "int");
+        $note = getTable("list", $id);
+  
+        if(!is_numeric($id) && isset($note) && !empty($note)){
+          echo("Er bestaat geen lijst met dit id!");
+        }else{
+          $data["id"] = $id;
+        }
       }
 
       if(!empty($_POST["listId"])){
@@ -178,24 +188,36 @@
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(!empty($_POST["SubmitBtn"])) {
       $input = controle();
-    }if(!empty($_POST) && isset($_POST)){
+    }if(!empty($_POST) && isset($_POST) && $_POST["SubmitBtn"]){
       addNote($_POST);
     }elseif(!empty($_POST["Delete"])){
       deleteNote($_GET["id"]);
     }elseif(!empty($_POST["SubmitBtnList"])){
-      echo("test add");
       $input = controle();
       addList($input);
     }elseif(!empty($_POST["SubmitBtn2"])){
       $input = controle();
       editNote($input);
     }elseif(!empty($_POST["editList"])){
-      echo("test edit");
       $input = controle();
       editList($input);
     }elseif(!empty($_POST["DeleteList"])){
       deleteList($_GET["id"]);
     }
+  }
+
+  // Edit een lijst
+  function editList($data){
+    $conn = openDatabase();
+    $data["id"] = intval($data["id"]);
+    $check = getTable("list", $data["id"]);
+
+    if(!empty($data["id"]) && isset($data["id"]) && is_numeric($data["id"]) && !empty($check) && isset($check)){
+      $query = $conn->prepare("UPDATE list SET title2=:title2 WHERE id=:id");
+      $query->bindParam(":title2",  $data["title2"]);
+      $query->bindParam(":id", $data["id"]);
+      $query->execute(); 
+    } 
   }
 
   // Alle lijsten ophalen
@@ -210,7 +232,6 @@
 
   // Lijst toevoegen
   function addList($data){
-    echo("functie uitgevoerd");
     $conn = openDatabase();
     
     if(!empty($data) && isset($data)){
@@ -226,32 +247,20 @@
     }
   }
 
-   // Edit een lijst
-   function editList($data){
-    echo("testen edit");
-    $conn = openDatabase();
-    $data["id"] = intval($data["id"]);
-    $check = getTable("list", $data["id"]);
-
-    if(!empty($data["id"]) && isset($data["id"]) && is_numeric($data["id"]) && !empty($check) && isset($check)){
-      $query = $conn->prepare("UPDATE list SET title2=:title2 WHERE id=:id");
-      $query->bindParam(":title2",  $data["title2"]);
-      $query->bindParam(":id", $data["id"]);
-      $query->execute(); 
-    } 
-  }
-
   // Verwijderd 1 lijst
   function deleteList($id){
-    echo("testen delete");
     $conn = openDatabase();
     $id = intval($id);
     $check = getTable("list", $id);
 
     if(!empty($id) && isset($id) && is_numeric($id) && !empty($check) && isset($check)){
+      // $query = $conn->prepare("DELETE FROM todolist WHERE listId = :id");
       $query = $conn->prepare("DELETE FROM list WHERE id = :id");
       $query->bindParam(":id", $id);
       $query->execute(); 
     } 
   }
+
+  // DELETE FROM list, todolist INNER JOIN todolist
+  // WHERE list.id = todolist.listId;
 ?>

@@ -16,14 +16,13 @@
         <h4>Wijzig de Lijst:</h4>
         <br>
         <form method="post" action="../index.php">  
-            <input type="hidden" name="id" value="<?php echo $_GET["id"];?>">
-            <input type="hidden" name="list_id" value="<?php echo $list["id"];?>">
-            
-            <p><b>Titel: </b><input type="text" name="task" required value="<?php echo $list["title2"]?>"></p>
+          <input type="hidden" name="id" value="<?php echo $_GET["id"];?>">
+          
+          <p><b>Titel: </b><input type="text" name="title2" required value="<?php echo $list["title2"]?>"></p>
+          <br>
 
-            <br>
-            <button class="buttons" name="editList" value="confirm">Confirm</button>
-            <a href="../index.php" class="link">Sluiten</a>
+          <button class="buttons" name="editList" value="confirm">Confirm</button>
+          <a href="../index.php" class="link">Sluiten</a>
         </form>
       </div>
     </div>
