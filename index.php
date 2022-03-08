@@ -14,17 +14,17 @@
 </head>
   <body>
   <header>
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#"><i id="icon" class="fa-solid fa-note-sticky"></i></a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active"> -->
+          <li class="nav-item active">
             <a class="nav-link" href="script/makeList.php"><h3>Lijst maken</h3></a>
-          <!-- </li>
+          </li>
         </ul>
       </div>
     </nav>
-  </header> -->
+  </header>
 
   <?php
     foreach($lists as $list){
@@ -34,8 +34,15 @@
       <table>
         </tr>
           <th><?=$list["title2"]?>
-            <a href="script/editList.php"><i class="fa-solid fa-pencil" style="color:#38df6a"></i></a>
-            <a href="script/deleteList.php"><i class="fa-solid fa-trash-can" style="color:#38df6a"></i></a>
+            <a href="script/editList.php?id=<?=$list["id"]?>"><i class="fa-solid fa-pencil" style="color:#38df6a"></i></a>
+            <a href="script/makeNote.php?listId=<?=$list["id"]?>"><i class="fa-solid fa-plus" style="color:#38df6a"></i></a>
+            <a href="script/deleteList.php?id=<?=$list["id"]?>"><i class="fa-solid fa-trash-can" style="color:#38df6a"></i></a>
+            
+            <select id="filter" name="filter">
+              <option selected value="Duur">Duur</option>
+              <option value="Status">Status</option>
+            </select>
+
           </th>
         </tr>
 
@@ -52,8 +59,6 @@
 
         </tr>
         <br>
-        <td id="indexBtn"><a href="script/makeNote.php?listId=<?=$list["id"]?>" class="buttonsList">Notitie maken</a></td>
-      </table>
       <?php
         }
       ?>
