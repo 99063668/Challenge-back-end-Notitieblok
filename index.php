@@ -14,16 +14,19 @@
 </head>
   <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#"><i id="icon" class="fa-solid fa-note-sticky"></i></a>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="script/makeList.php"><h3>Lijst maken</h3></a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand"><i class="fa-solid fa-note-sticky" style="padding-right: 4px;"></i>Notities</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="script/makeList.php">Lijst maken<span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
   </header>
 
   <?php
@@ -64,6 +67,7 @@
               <option value="filterAfgerond">Status: afgerond</option>
               <option value="filterNbegonnen">Status: niet begonnen</option>
             </select>
+            <button name="confirmOption" class="buttons">Filter</button>
           </form>
         </th>
       <?php
