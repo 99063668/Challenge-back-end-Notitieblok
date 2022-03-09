@@ -22,8 +22,20 @@
             
             <p><b>Titel: </b><input type="text" name="task" required value="<?php echo $note["title"]?>"></p>
             <p><b>Taak: </b><input type="text" name="task" required value="<?php echo $note["task"]?>"></p>
-            <p><b>Geschatte tijd: </b><input type="time" name="duration" required value="<?php echo $note["duration"]?>"></p>
-            <!-- <p><b>Geschatte tijd: </b><input type="text" name="duration" required value="<?php echo $note["duration"]?>"></p> -->
+            <!-- <p><b>Geschatte tijd: </b><input type="time" name="duration" required value="<?php echo $note["duration"]?>"></p> -->
+
+            <label for="duration"><b>Duur: </b></label>
+            <select id="duration" name="duration">
+              <option selected><--Geschatte tijd--></option>
+              <option value="30 min">30 min</option>
+              <option value="1 uur">1 uur</option>
+              <option value="1.5 uur">1.5 uur</option>
+              <option value="2 uur">2 uur</option>
+              <option value="2.5 uur">2.5 uur</option>
+              <option value="3 uur">3 uur</option>
+            </select>
+
+            <br>
 
             <label for="status"><b>Status:</b></label>
             <select id="status" name="status">

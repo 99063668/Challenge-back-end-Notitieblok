@@ -33,7 +33,7 @@
           </form>
 
           <form action="form.php?id=<?= $note["id"]?>" method="post">
-            <button class="buttons" type="submit" name="Delete2" value="Delete2">Verwijder</button>
+            <button class="buttons" type="submit" name="Delete2" value="Delete2" style="background-color:#FF8200">Verwijder</button>
           </form>
 
           <a href="../index.php" class="link">Sluiten</a>

@@ -86,8 +86,8 @@
 
     if(!empty($_POST["duration"])){
       $duration = trimdata($_POST["duration"]);
-      if(!preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $duration)){
-        echo("Alleen tijd is toegestaan!");
+      if(!preg_match("/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", $duration)){
+        echo("Alleen letters en spaties zijn toegestaan!");
       }else{
         $data["duration"] = $duration;
       }
@@ -204,7 +204,64 @@
     }elseif(!empty($_POST["DeleteList"])){
       deleteList($_GET["id"]);
     }
+
+    // if(!empty($_POST["filter"])){
+    //   $filter = $_POST['filter'];
+      
+    //   $selectedItem = $_POST['filter'];
+    //   $conn = openDatabase();
+      
+    //   switch($filter){
+    //     case 'sorteerDuur':
+    //       echo("sorteerDuur");
+    //       $query = $conn->prepare("SELECT * FROM todolist ORDER BY duration ASC");
+    //       break;
+    //     case 'filterBezig':
+    //       echo("filterBezig");
+    //       $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Bezig'");
+    //       break;
+    //     case 'filterAfgerond':
+    //       echo("filterAfgerond");
+    //       $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Afgerond'");
+    //       break;
+    //     case 'filterNbegonnen':
+    //       echo("filterNbegonnen");
+    //       $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Niet begonnen'");
+    //       break;
+    //   }
+    //   $query->execute();
+    //   return $query->fetchAll();
+    // }
+
+    // $conn->prepare("SELECT * FROM todolist WHERE status = {$selectedItem}");
+    elseif(!empty($_POST["confirmOption"]) && isset($_POST['filter'])){
+      $selectedItem = $_POST['filter'];
+      $conn = openDatabase();
+
+      var_dump($selectedItem);
+  
+      if($selectedItem == 'sorteerDuur'){
+        echo("sorteerDuur");
+        $query = $conn->prepare("SELECT * FROM todolist ORDER BY duration ASC");
+      }elseif($selectedItem = 'filterBezig'){
+        echo("filterBezig");
+        $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Bezig'");
+      }elseif($selectedItem == 'filterAfgerond'){
+        echo("filterAfgerond");
+        $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Afgerond'");
+      }elseif($selectedItem == 'filterNbegonnen'){
+        echo("filyerNbegonnen");
+        $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Niet begonnen'");
+      }else{
+        return false;
+      }
+  
+      $query->execute();
+      return $query->fetchAll();
+    }
+
   }
+
 
   // Edit een lijst
   function editList($data){
@@ -254,13 +311,12 @@
     $check = getTable("list", $id);
 
     if(!empty($id) && isset($id) && is_numeric($id) && !empty($check) && isset($check)){
-      // $query = $conn->prepare("DELETE FROM todolist WHERE listId = :id");
+      $query = $conn->prepare("DELETE FROM todolist WHERE listId = :id");
+      $query->bindParam(":id", $id);
+      $query->execute(); 
       $query = $conn->prepare("DELETE FROM list WHERE id = :id");
       $query->bindParam(":id", $id);
       $query->execute(); 
     } 
   }
-
-  // DELETE FROM list, todolist INNER JOIN todolist
-  // WHERE list.id = todolist.listId;
 ?>
