@@ -203,65 +203,19 @@
       editList($input);
     }elseif(!empty($_POST["DeleteList"])){
       deleteList($_GET["id"]);
-    }
-
-    // if(!empty($_POST["filter"])){
-    //   $filter = $_POST['filter'];
-      
-    //   $selectedItem = $_POST['filter'];
-    //   $conn = openDatabase();
-      
-    //   switch($filter){
-    //     case 'sorteerDuur':
-    //       echo("sorteerDuur");
-    //       $query = $conn->prepare("SELECT * FROM todolist ORDER BY duration ASC");
-    //       break;
-    //     case 'filterBezig':
-    //       echo("filterBezig");
-    //       $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Bezig'");
-    //       break;
-    //     case 'filterAfgerond':
-    //       echo("filterAfgerond");
-    //       $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Afgerond'");
-    //       break;
-    //     case 'filterNbegonnen':
-    //       echo("filterNbegonnen");
-    //       $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Niet begonnen'");
-    //       break;
-    //   }
-    //   $query->execute();
-    //   return $query->fetchAll();
-    // }
-
-    // $conn->prepare("SELECT * FROM todolist WHERE status = {$selectedItem}");
-    elseif(!empty($_POST["confirmOption"]) && isset($_POST['filter'])){
-      $selectedItem = $_POST['filter'];
-      $conn = openDatabase();
-
-      var_dump($selectedItem);
+    }elseif(!empty($_POST["submit"]) && $_POST["submit"] == "filterconfirmed"){
+      $conn = openDatabase();    
   
-      if($selectedItem == 'sorteerDuur'){
-        echo("sorteerDuur");
-        $query = $conn->prepare("SELECT * FROM todolist ORDER BY duration ASC");
-      }elseif($selectedItem = 'filterBezig'){
-        echo("filterBezig");
-        $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Bezig'");
-      }elseif($selectedItem == 'filterAfgerond'){
-        echo("filterAfgerond");
-        $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Afgerond'");
-      }elseif($selectedItem == 'filterNbegonnen'){
-        echo("filyerNbegonnen");
-        $query = $conn->prepare("SELECT * FROM todolist WHERE status = 'Niet begonnen'");
-      }else{
-        return false;
+      if($_POST['filter'] == 'sorteerDuur'){
+        $filteredList = getDataFilter("todolist", ["listId" => ["operator" => "=", "value"=> $_POST["listId"]]], " ORDER BY duration ASC");
+      }elseif($_POST['filter'] !== 'filterN' && $_POST['filter'] !== 'sorteerDuur'){
+        // echo("testen");
+        $filteredList = getDataFilter("todolist", ["listId" => ["operator" => "=", "value"=> $_POST["listId"]], "status" => ["operator" => "=", "value"=> $_POST["filter"]]]);
+      }elseif($_POST['filter'] == 'filterN'){
+        $filteredList = getDataFilter("todolist", ["listId" => ["operator" => "=", "value"=> $_POST["listId"]]]);
       }
-  
-      $query->execute();
-      return $query->fetchAll();
     }
-
   }
-
 
   // Edit een lijst
   function editList($data){
@@ -319,4 +273,40 @@
       $query->execute(); 
     } 
   }
-?>
+
+  // Filter lijst
+  function getDataFilter($table, $params, $order = null){
+    try{
+      $conn = openDatabase();
+      $count = 0;
+
+      if(($table == "todolist" || $table == "list")){
+        $sql = "SELECT * FROM `$table` WHERE ";
+
+        foreach ($params as $key => $value){
+          if($count == 0){
+            $sql .= "`".$key."`".$value["operator"]." :".$key;
+          }else{
+            $sql .= " AND `".$key."`".$value["operator"]." :".$key;
+          }
+          $count++;
+        }
+
+        if($order != null){
+          $sql .= $order;
+        }
+
+        $query = $conn->prepare($sql);
+        foreach ($params as $key => $value){
+          $query->bindParam(":$key", $value["value"]);
+        }
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $conn = null;
+        return $result;
+      }
+    }catch(PDOException $e) {
+      echo "Connection failed: ". $e->getMessage();
+    }
+  }

@@ -27,12 +27,12 @@
     <label for="duration"><b>Duur: </b></label>
     <select id="duration" name="duration">
       <option selected><--Geschatte tijd--></option>
-      <option value="30 min">30 min</option>
-      <option value="1 uur">1 uur</option>
-      <option value="1.5 uur">1.5 uur</option>
-      <option value="2 uur">2 uur</option>
-      <option value="2.5 uur">2.5 uur</option>
-      <option value="3 uur">3 uur</option>
+      <option value="0.30">30 min</option>
+      <option value="1">1 uur</option>
+      <option value="1.5">1.5 uur</option>
+      <option value="2">2 uur</option>
+      <option value="2.5">2.5 uur</option>
+      <option value="3">3 uur</option>
     </select>
 
     <br>
