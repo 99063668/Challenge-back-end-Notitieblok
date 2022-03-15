@@ -48,7 +48,7 @@
 
         <tr>
         <?php
-          if($filteredList == NULL && $list["id"] !== $filteredList[0]["listId"]){
+          if($list["id"] !== $filteredList[0]["listId"]){
             foreach($notes as $note){
               if($note["listId"] == $list["id"]){
         ?>
