@@ -1,7 +1,7 @@
 <?php
   include("script/functions.php");
   $lists = getAllList();
-  var_dump($filteredList);
+  //var_dump($filteredList);
 ?>
 
 <!DOCTYPE html>
@@ -48,25 +48,21 @@
 
         <tr>
         <?php
-          // $list["id"] == $filteredList[0]["listId"]
-          // $list["id"] == $list[0]["id"]
-          if($filteredList == NULL /*&& $list["id"] == $note["id"]*/){
+          if($filteredList == NULL && $list["id"] !== $filteredList[0]["listId"]){
             foreach($notes as $note){
-              
+              if($note["listId"] == $list["id"]){
         ?>
-          <td><a class="link" href="script/detail.php?id=<?=$note["id"]?>"><?=$note["title"]?></a></td>
+                <td><a class="link" href="script/detail.php?id=<?=$note["id"]?>"><?=$note["title"]?></a></td>
         <?php
+              }
             }
-          }
+          }elseif($filteredList !== NULL && $list["id"] == $filteredList[0]["listId"]){
         ?>
 
         <?php
-          // var_dump($filteredList[0]["listId"]);
-          
-          if($filteredList !== NULL && $list["id"] == $filteredList[0]["listId"]){
             foreach($filteredList as $filter){
         ?>
-          <td><a class="link" href="script/detail.php?id=<?=$filter["id"]?>"><?=$filter["title"]?></a></td>
+              <td><a class="link" href="script/detail.php?id=<?=$filter["id"]?>"><?=$filter["title"]?></a></td>
         <?php
             }
           }
@@ -81,9 +77,9 @@
             <select id="filter" name="filter">
               <option selected><--Filter lijst--></option>
               <option value="sorteerDuur">Duur</option>
-              <option value="filterBezig">Status: bezig</option>
-              <option value="filterAfgerond">Status: afgerond</option>
-              <option value="filterNbegonnen">Status: niet begonnen</option>
+              <option value="Bezig">Status: bezig</option>
+              <option value="Afgerond">Status: afgerond</option>
+              <option value="Niet begonnen">Status: niet begonnen</option>
               <option value="filterN">Niet filteren</option>
             </select>
             <button name="submit" value="filterconfirmed" class="buttons">Filter</button>
