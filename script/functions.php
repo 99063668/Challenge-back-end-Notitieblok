@@ -209,7 +209,6 @@
       if($_POST['filter'] == 'sorteerDuur'){
         $filteredList = getDataFilter("todolist", ["listId" => ["operator" => "=", "value"=> $_POST["listId"]]], " ORDER BY duration ASC");
       }elseif($_POST['filter'] !== 'filterN' && $_POST['filter'] !== 'sorteerDuur'){
-        // echo("testen");
         $filteredList = getDataFilter("todolist", ["listId" => ["operator" => "=", "value"=> $_POST["listId"]], "status" => ["operator" => "=", "value"=> $_POST["filter"]]]);
       }elseif($_POST['filter'] == 'filterN'){
         $filteredList = getDataFilter("todolist", ["listId" => ["operator" => "=", "value"=> $_POST["listId"]]]);
@@ -297,7 +296,7 @@
         }
 
         $query = $conn->prepare($sql);
-        foreach ($params as $key => $value){
+        foreach($params as $key => $value){
           $query->bindParam(":$key", $value["value"]);
         }
         $query->execute();
