@@ -1,7 +1,7 @@
 <?php
   include("script/functions.php");
-  $notes = getAllNotes();
   $lists = getAllList();
+  var_dump($filteredList);
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +31,7 @@
 
   <?php
     foreach($lists as $list){
+      $notes = getDataFilter("todolist", ["listId" => ["operator" => "=", "value"=> $list["id"]]]);
   ?>
   <div class="row">
     <div class="column">
@@ -45,12 +46,27 @@
           </th>
         </tr>
 
-        <?php
-          foreach($notes as $note){
-            if($note["listId"] == $list["id"]){
-        ?>
         <tr>
+        <?php
+          // $list["id"] == $filteredList[0]["listId"]
+          // $list["id"] == $list[0]["id"]
+          if($filteredList == NULL /*&& $list["id"] == $note["id"]*/){
+            foreach($notes as $note){
+              
+        ?>
           <td><a class="link" href="script/detail.php?id=<?=$note["id"]?>"><?=$note["title"]?></a></td>
+        <?php
+            }
+          }
+        ?>
+
+        <?php
+          // var_dump($filteredList[0]["listId"]);
+          
+          if($filteredList !== NULL && $list["id"] == $filteredList[0]["listId"]){
+            foreach($filteredList as $filter){
+        ?>
+          <td><a class="link" href="script/detail.php?id=<?=$filter["id"]?>"><?=$filter["title"]?></a></td>
         <?php
             }
           }
@@ -59,15 +75,18 @@
         <br>
 
         <th> 
-          <form method="post" action="index.php"> 
+          <form method="post" action="index.php">
+            <input type="hidden" name="listId" value="<?=$list["id"]?>">
+
             <select id="filter" name="filter">
               <option selected><--Filter lijst--></option>
               <option value="sorteerDuur">Duur</option>
               <option value="filterBezig">Status: bezig</option>
               <option value="filterAfgerond">Status: afgerond</option>
               <option value="filterNbegonnen">Status: niet begonnen</option>
+              <option value="filterN">Niet filteren</option>
             </select>
-            <button name="confirmOption" class="buttons">Filter</button>
+            <button name="submit" value="filterconfirmed" class="buttons">Filter</button>
           </form>
         </th>
       <?php
