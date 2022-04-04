@@ -239,9 +239,8 @@
       $query->execute();
 
       return $query->fetchAll();
-    }catch(exception $conn){
-      echo("Verbinding mislukt");
-    }
+    }catch(ErrorException $e) {
+      echo("No data found!" + $e);
   }
 
   // Lijst toevoegen
