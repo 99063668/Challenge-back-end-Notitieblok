@@ -232,16 +232,16 @@
 
   // Alle lijsten ophalen
   function getAllList(){
-    $conn = openDatabase();
-
     try{
+      $conn = openDatabase();
+
       $query = $conn->prepare("SELECT * FROM list");
       $query->execute();
-    }catch(exception $e){
-      echo("Er zijn geen gegevens gevonden!");
-    }
 
-    return $query->fetchAll();
+      return $query->fetchAll();
+    }catch(exception $conn){
+      echo("Verbinding mislukt");
+    }
   }
 
   // Lijst toevoegen
