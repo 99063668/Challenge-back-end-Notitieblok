@@ -234,8 +234,12 @@
   function getAllList(){
     $conn = openDatabase();
 
-    $query = $conn->prepare("SELECT * FROM list");
-    $query->execute();
+    try{
+      $query = $conn->prepare("SELECT * FROM list");
+      $query->execute();
+    }catch(exception $e){
+      echo("Er zijn geen gegevens gevonden!");
+    }
 
     return $query->fetchAll();
   }
