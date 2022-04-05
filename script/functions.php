@@ -37,7 +37,7 @@
   function getTable($table, $id){
     $conn = openDatabase();
     $id = intval($id);
-    try {
+    // try {
       if (($table == "todolist" || $table == "list") && isset($id) && !empty($id) && is_numeric($id)) {
         $query = $conn->prepare("SELECT * FROM `$table` WHERE id = :id");
         $query->bindParam(":id", $id);
@@ -46,9 +46,9 @@
 
         return $result;
       }
-    } catch(PDOException $e) {
-        echo "Connection failed: ". $e->getMessage();
-    }
+    // } catch(PDOException $e) {
+    //     echo "Connection failed: ". $e->getMessage();
+    // }
   }
 
   //Edit een notitie
@@ -239,8 +239,9 @@
       $query->execute();
 
       return $query->fetchAll();
-    }catch(ErrorException $e) {
+    }catch(ErrorException $e){
       echo("No data found!" + $e);
+    }
   }
 
   // Lijst toevoegen
