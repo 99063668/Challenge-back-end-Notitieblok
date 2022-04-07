@@ -2,7 +2,6 @@
   include("script/functions.php");
   $lists = getAllList();
   //var_dump($filteredList);
-  //dhjcgazm
 ?>
 
 <!DOCTYPE html>
